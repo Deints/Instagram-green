@@ -4,6 +4,8 @@
 
 La diagnosi di *Fight Club*, lo sguardo del *Pianeta Verde*.
 
+**Il profilo va in pilota automatico:** un agente scrive i post, verifica le citazioni, pubblica tre volte a settimana, risponde ai commenti e legge le statistiche. Usa solo l'API ufficiale di Instagram. Come funziona e cosa serve per attivarlo: [`docs/06-autopilota.md`](docs/06-autopilota.md).
+
 ![Le copertine dei primi 9 post](esempi/copertine.png)
 
 ## Come funziona un post
@@ -24,16 +26,20 @@ La diagnosi di *Fight Club*, lo sguardo del *Pianeta Verde*.
 | [`docs/03-fonti.md`](docs/03-fonti.md) | Libri, idee e dati per argomentare |
 | [`docs/04-legale.md`](docs/04-legale.md) | Cosa puoi fare e cosa no (citazioni, foto, diffamazione) |
 | [`docs/05-piano-lancio.md`](docs/05-piano-lancio.md) | Il piano dei primi 90 giorni |
-| [`post/`](post/) | 9 post pronti (testo di ogni slide + didascalia + hashtag) |
+| [`docs/06-autopilota.md`](docs/06-autopilota.md) | Il pilota automatico: cosa fa da solo, cosa fai tu, come fermarlo |
+| [`post/`](post/) | I post, uno per file, ognuno con il suo stato (bozza, pronto, pubblicato…) |
+| [`agente/`](agente/) | L'agente: istruzioni, regole per i commenti, script, diario, cose da fare per te |
 | [`contenuti/citazioni.csv`](contenuti/citazioni.csv) | Archivio delle citazioni, con stato della verifica e idee future |
 | [`generatore/`](generatore/) | Lo strumento che trasforma i post in immagini |
+| `pubblici/` | Le immagini JPEG che l'agente pubblica (create in automatico) |
+| `report/` | I report settimanali dell'agente |
 
 ## Da dove partire
 
 1. Leggi [`docs/01-concept.md`](docs/01-concept.md) (5 minuti).
 2. Scegli il nome dell'account e scrivilo in `generatore/config.json`.
-3. Genera le immagini (vedi sotto) e **verifica le fonti** di ogni post.
-4. Segui [`docs/05-piano-lancio.md`](docs/05-piano-lancio.md).
+3. Crea il profilo e il token seguendo [`docs/06-autopilota.md`](docs/06-autopilota.md), poi di' a Claude "fatto".
+4. Da lì l'agente verifica le fonti, programma i post e parte.
 
 ## Creare le immagini
 

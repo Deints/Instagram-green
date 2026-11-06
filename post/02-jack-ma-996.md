@@ -1,3 +1,4 @@
+stato: bozza
 titolo: 996, una benedizione
 autore: Jack Ma, fondatore di Alibaba
 fonte: Discorso interno ad Alibaba, diffuso su Weibo, aprile 2019

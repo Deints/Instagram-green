@@ -1,3 +1,4 @@
+stato: bozza
 titolo: Ossessionato o mediocre
 autore: Grant Cardone
 fonte: Titolo del libro "Be Obsessed or Be Average", 2016

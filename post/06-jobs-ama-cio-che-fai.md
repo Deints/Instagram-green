@@ -1,3 +1,4 @@
+stato: bozza
 titolo: Ama ciò che fai
 autore: Steve Jobs
 fonte: Discorso ai laureati di Stanford, 12 giugno 2005

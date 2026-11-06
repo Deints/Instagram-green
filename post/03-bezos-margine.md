@@ -1,3 +1,4 @@
+stato: bozza
 titolo: Il tuo margine è la mia opportunità
 autore: Jeff Bezos, fondatore di Amazon
 fonte: Frase celebre riportata nelle sue biografie (es. Brad Stone, "The Everything Store", 2013)

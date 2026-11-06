@@ -1,9 +1,11 @@
 {
   "name": "instagram-green",
   "private": true,
-  "description": "Generatore di caroselli Instagram per il progetto Disconnessi",
+  "description": "Disconnessi: generatore di caroselli e agente che gestisce il profilo Instagram",
   "scripts": {
-    "render": "node generatore/render.js"
+    "render": "node generatore/render.js",
+    "test": "node agente/test/prova.js",
+    "controlla": "node agente/controlla.js"
   },
   "devDependencies": {
     "playwright": "^1.63.0"

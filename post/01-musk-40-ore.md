@@ -1,3 +1,4 @@
+stato: bozza
 titolo: Nessuno ha mai cambiato il mondo con 40 ore
 autore: Elon Musk
 fonte: Tweet, 26 novembre 2018

@@ -1,20 +1,20 @@
 #!/usr/bin/env node
 /*
- * Trasforma i post scritti in /post/*.md in immagini PNG 1080x1350
+ * Trasforma i post scritti in /post/*.md in immagini 1080x1350
  * pronte per un carosello Instagram, più un file con la didascalia.
  *
- *   npm run render            -> tutti i post
- *   npm run render -- 03      -> solo i post il cui nome contiene "03"
- *
- * Risultato in /output/<nome-post>/
+ *   npm run render                    -> tutti i post, PNG in /output/<post>/
+ *   npm run render -- 03              -> solo i post il cui nome contiene "03"
+ *   npm run render -- 03 --pubblica   -> JPEG in /pubblici/<post>/ (quelli che
+ *                                        l'agente pubblica su Instagram)
  */
 const fs = require('fs');
 const path = require('path');
-const { chromium } = require('playwright');
 
-const ROOT = path.resolve(__dirname, '..');
+const ROOT = path.resolve(process.env.DISCONNESSI_ROOT || path.join(__dirname, '..'));
 const POST_DIR = path.join(ROOT, 'post');
 const OUT_DIR = path.join(ROOT, 'output');
+const PUB_DIR = path.join(ROOT, 'pubblici');
 const config = JSON.parse(fs.readFileSync(path.join(__dirname, 'config.json'), 'utf8'));
 const css = fs.readFileSync(path.join(__dirname, 'stile.css'), 'utf8');
 
@@ -159,43 +159,69 @@ function adattaTesto() {
   return document.querySelectorAll('[data-troppo]').length;
 }
 
-// ---------- main ----------
+// ---------- creazione immagini ----------
 
-(async () => {
-  const filtro = process.argv[2] || '';
-  const files = fs.readdirSync(POST_DIR)
-    .filter((f) => f.endsWith('.md') && f.includes(filtro))
-    .sort();
-  if (!files.length) { console.log('Nessun post trovato in /post'); return; }
-
+async function apriBrowser() {
+  const { chromium } = require('playwright');
   const browser = await chromium.launch();
   const page = await browser.newPage({ viewport: { width: 1080, height: 1350 }, deviceScaleFactor: 1 });
   // Carica la pagina (con i font) una volta sola, poi cambia solo il contenuto.
   await page.setContent(pagina);
   await page.evaluate((famiglie) => Promise.all(famiglie.flatMap((f) =>
     [400, 700, 900].map((w) => document.fonts.load(`${w} 40px "${f}"`)))), FONT.map(([f]) => f));
+  return { browser, page };
+}
 
-  for (const f of files) {
-    const nome = f.replace(/\.md$/, '');
-    const post = leggiPost(path.join(POST_DIR, f));
-    const dir = path.join(OUT_DIR, nome);
-    fs.rmSync(dir, { recursive: true, force: true });
-    fs.mkdirSync(dir, { recursive: true });
+// Crea le slide di un post. Restituisce i percorsi dei file e gli avvisi.
+async function creaSlide(page, file, { pubblica = false } = {}) {
+  const nome = path.basename(file).replace(/\.md$/, '');
+  const post = leggiPost(file);
+  const dir = path.join(pubblica ? PUB_DIR : OUT_DIR, nome);
+  fs.rmSync(dir, { recursive: true, force: true });
+  fs.mkdirSync(dir, { recursive: true });
 
-    for (let i = 0; i < post.slide.length; i++) {
-      await page.evaluate((html) => { document.body.innerHTML = html; }, slideHtml(post.slide[i], i, post.slide.length, post));
-      const troppo = await page.evaluate(adattaTesto);
-      if (troppo) console.warn(`  ⚠ ${nome} slide ${i + 1}: testo troppo lungo, accorcialo`);
-      await page.screenshot({ path: path.join(dir, `${String(i + 1).padStart(2, '0')}.png`) });
-    }
-
+  const files = [];
+  const avvisi = [];
+  for (let i = 0; i < post.slide.length; i++) {
+    await page.evaluate((html) => { document.body.innerHTML = html; }, slideHtml(post.slide[i], i, post.slide.length, post));
+    if (await page.evaluate(adattaTesto)) avvisi.push(`slide ${i + 1}: testo troppo lungo, accorcialo`);
+    // Instagram accetta solo JPEG; per le anteprime va bene il PNG.
+    const out = path.join(dir, `${String(i + 1).padStart(2, '0')}.${pubblica ? 'jpg' : 'png'}`);
+    await page.screenshot(pubblica ? { path: out, type: 'jpeg', quality: 92 } : { path: out });
+    files.push(out);
+  }
+  if (!pubblica) {
     const hashtag = post.meta.hashtag ? `\n\n${post.meta.hashtag}` : '';
     fs.writeFileSync(path.join(dir, 'didascalia.txt'), post.didascalia + hashtag + '\n');
-
-    console.log(`✓ ${nome}: ${post.slide.length} slide`);
-    if (post.meta.verifica) console.log(`  → prima di pubblicare verifica: ${post.meta.verifica}`);
   }
+  return { nome, post, dir, files, avvisi };
+}
 
-  await browser.close();
-  console.log(`\nFatto. Trovi tutto in ${path.relative(process.cwd(), OUT_DIR) || OUT_DIR}/`);
-})().catch((e) => { console.error(e.message); process.exit(1); });
+module.exports = { leggiPost, creaSlide, apriBrowser, POST_DIR, PUB_DIR };
+
+// ---------- uso da riga di comando ----------
+
+if (require.main === module) {
+  (async () => {
+    const args = process.argv.slice(2);
+    const pubblica = args.includes('--pubblica');
+    const filtro = args.find((a) => !a.startsWith('--')) || '';
+    const files = fs.readdirSync(POST_DIR)
+      .filter((f) => f.endsWith('.md') && f.includes(filtro))
+      .sort();
+    if (!files.length) { console.log('Nessun post trovato in /post'); return; }
+
+    const { browser, page } = await apriBrowser();
+    for (const f of files) {
+      const r = await creaSlide(page, path.join(POST_DIR, f), { pubblica });
+      console.log(`✓ ${r.nome}: ${r.files.length} slide`);
+      for (const a of r.avvisi) console.warn(`  ⚠ ${a}`);
+      if (r.post.meta.verifica && r.post.meta.stato !== 'pubblicato') {
+        console.log(`  → prima di pubblicare verifica: ${r.post.meta.verifica}`);
+      }
+    }
+    await browser.close();
+    const dove = pubblica ? PUB_DIR : OUT_DIR;
+    console.log(`\nFatto. Trovi tutto in ${path.relative(process.cwd(), dove) || dove}/`);
+  })().catch((e) => { console.error(e.message); process.exit(1); });
+}

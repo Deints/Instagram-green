@@ -1,0 +1,58 @@
+{
+  "attivo": false,
+  "modalita": "autonomo",
+  "branch_lavoro": "main",
+  "fuso_orario": "Europe/Rome",
+  "calendario": [
+    {
+      "giorno": "lunedi",
+      "ora": "18:15"
+    },
+    {
+      "giorno": "mercoledi",
+      "ora": "18:15"
+    },
+    {
+      "giorno": "venerdi",
+      "ora": "18:15"
+    }
+  ],
+  "coda_minima": 6,
+  "anticipo_minimo_ore": 48,
+  "proporzione_alternativa": "1 post propositivo ogni 3 critici",
+  "limite_risposte_giorno": 40,
+  "giorni_commenti": 14,
+  "api_versione": "v25.0",
+  "immagini_base_url": null,
+  "metriche": [
+    "reach",
+    "views",
+    "saved",
+    "shares",
+    "total_interactions"
+  ],
+  "hashtag": {
+    "fisso": "#disconnessi",
+    "pubblico_hustle": [
+      "#mindset",
+      "#imprenditoria",
+      "#crescitapersonale",
+      "#motivazione",
+      "#successo",
+      "#produttività"
+    ],
+    "tema": [
+      "#burnout",
+      "#hustleculture",
+      "#lavoro",
+      "#settimanacorta",
+      "#worklifebalance",
+      "#decrescita"
+    ]
+  },
+  "token_scadenza": null,
+  "threads": {
+    "attivo": false,
+    "api_versione": "v1.0"
+  }
+}

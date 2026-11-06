@@ -1,3 +1,4 @@
+stato: bozza
 titolo: E se si potesse lavorare meno?
 autore: Saggezza da ufficio
 fonte: detto comune, nessun autore

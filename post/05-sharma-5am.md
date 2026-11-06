@@ -1,3 +1,4 @@
+stato: bozza
 titolo: Possiedi la tua mattina
 autore: Robin Sharma
 fonte: Sottotitolo del libro "The 5 AM Club: Own Your Morning. Elevate Your Life.", 2018

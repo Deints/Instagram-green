@@ -1,3 +1,4 @@
+stato: bozza
 titolo: Fare soldi mentre dormi
 autore: attribuita a Warren Buffett
 fonte: nessuna fonte primaria nota

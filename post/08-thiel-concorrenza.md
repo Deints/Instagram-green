@@ -1,3 +1,4 @@
+stato: bozza
 titolo: La concorrenza è per perdenti
 autore: Peter Thiel, cofondatore di PayPal
 fonte: "Competition Is for Losers", Wall Street Journal, 12 settembre 2014
