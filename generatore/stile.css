@@ -1,0 +1,184 @@
+/* Due mondi:
+   - "hustle"  = come te la vendono  (nero + oro, maiuscolo, aggressivo)
+   - tutto il resto = come la vediamo noi (verde + crema, serif, calmo)
+   Il passaggio dall'oro al verde È il brand. */
+
+:root {
+  --nero: #0b0b0b;
+  --oro: #c9a227;
+  --oro-chiaro: #f5e3a3;
+  --verde: #2f6b45;
+  --verde-scuro: #10261b;
+  --verde-testo: #1c3326;
+  --verde-accento: #3e7c4f;
+  --verde-luce: #7bd389;
+  --crema: #eef3e6;
+  --crema-testo: #f3f7ee;
+
+  /* font inclusi in /generatore/font (licenza OFL), caricati da render.js */
+  --sans: "Inter Local", "Helvetica Neue", Arial, sans-serif;
+  --serif: "Serif Local", Georgia, "Times New Roman", serif;
+  --mono: "Mono Local", Menlo, "Courier New", monospace;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 1080px; height: 1350px; overflow: hidden; }
+
+.slide {
+  width: 1080px;
+  height: 1350px;
+  /* margini laterali ampi: la griglia del profilo taglia i bordi (anteprima 3:4) */
+  padding: 110px 110px 90px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  font-family: var(--serif);
+}
+
+.tag {
+  font-family: var(--mono);
+  font-size: 26px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 48px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.fit {
+  flex: 1 1 0;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+}
+.fit > * { width: 100%; }
+
+.testo p + p { margin-top: 0.8em; }
+.testo strong { font-weight: 700; }
+
+.fonte {
+  font-family: var(--mono);
+  font-size: 22px;
+  line-height: 1.4;
+  opacity: 0.7;
+  margin-top: 32px;
+}
+
+footer {
+  margin-top: 40px;
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--mono);
+  font-size: 22px;
+  letter-spacing: 0.06em;
+  opacity: 0.65;
+}
+
+/* ---------- 1. HUSTLE: come te la vendono ---------- */
+.hustle {
+  background:
+    radial-gradient(ellipse at 50% 35%, #1d1a10 0%, var(--nero) 65%);
+  color: var(--oro);
+  font-family: var(--sans);
+}
+.hustle .tag {
+  color: var(--oro);
+  border: 2px solid rgba(201, 162, 39, 0.5);
+  border-radius: 999px;
+  padding: 10px 26px;
+  align-self: flex-start;
+  font-size: 22px;
+}
+.hustle blockquote {
+  font-family: var(--sans);
+  font-weight: 900;
+  font-size: 104px;
+  line-height: 1.02;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  background: linear-gradient(180deg, var(--oro-chiaro) 0%, var(--oro) 55%, #8a6d12 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.hustle .autore {
+  margin-top: 40px;
+  font-size: 34px;
+  font-weight: 600;
+  color: var(--oro-chiaro);
+  letter-spacing: 0.02em;
+}
+.hustle .autore span {
+  display: block;
+  margin-top: 10px;
+  font-family: var(--mono);
+  font-weight: 400;
+  font-size: 22px;
+  color: var(--oro);
+  opacity: 0.75;
+}
+.hustle footer { color: var(--oro); }
+
+/* ---------- 2. DISCONNESSIONE: il ribaltamento ---------- */
+.disc {
+  background:
+    repeating-linear-gradient(0deg, rgba(255,255,255,0.025) 0 2px, transparent 2px 6px),
+    radial-gradient(ellipse at 50% 30%, #1a3a29 0%, var(--verde-scuro) 70%);
+  color: var(--crema-testo);
+}
+.disc .tag { color: var(--verde-luce); }
+.disc .tag .punto {
+  width: 18px; height: 18px; border-radius: 50%;
+  background: var(--verde-luce);
+  box-shadow: 0 0 18px var(--verde-luce);
+}
+.disc .originale {
+  font-family: var(--sans);
+  font-weight: 800;
+  font-size: 34px;
+  line-height: 1.2;
+  text-transform: uppercase;
+  color: var(--oro);
+  opacity: 0.55;
+  text-decoration: line-through;
+  text-decoration-thickness: 3px;
+  text-decoration-color: var(--verde-luce);
+}
+.disc .testo { font-size: 84px; line-height: 1.15; }
+.disc .testo strong { color: var(--verde-luce); font-weight: 700; }
+
+/* ---------- 3. TESTO e DATO: l'analisi ---------- */
+.chiaro { background: var(--crema); color: var(--verde-testo); }
+.chiaro .tag { color: var(--verde-accento); }
+.chiaro .tag::before {
+  content: ""; width: 44px; height: 3px; background: var(--verde-accento);
+}
+.chiaro .testo { font-size: 54px; line-height: 1.3; }
+.chiaro .testo strong { color: var(--verde-accento); }
+
+.dato .gruppo { font-size: 50px; }
+.dato .gruppo .testo { font-size: 1em; }
+.dato .numero {
+  font-family: var(--sans);
+  font-weight: 900;
+  font-size: 200px;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  color: var(--verde);
+  margin-bottom: 28px;
+}
+
+/* ---------- 4. DOMANDA: tocca a te ---------- */
+.verde { background: var(--verde); color: var(--crema-testo); }
+.verde .tag { color: var(--crema); opacity: 0.85; }
+.verde .testo { font-size: 76px; line-height: 1.15; }
+.verde .cta {
+  font-family: var(--mono);
+  font-size: 26px;
+  letter-spacing: 0.04em;
+  border-top: 2px solid rgba(243, 247, 238, 0.35);
+  padding-top: 28px;
+  margin-top: 40px;
+}
